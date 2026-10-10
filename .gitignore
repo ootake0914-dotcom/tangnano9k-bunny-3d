@@ -1,0 +1,20 @@
+# Gowin / Yosys / Nextpnr build artifacts
+*.json
+*.fs
+*.log
+*.vvp
+*.vcd
+*.ppm
+
+# Python cache & virtual environment
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
+# Editor / OS files
+.DS_Store
+Thumbs.db
+*.swp
+*~
