@@ -11,11 +11,11 @@ Built using a **100% open-source toolchain** (Yosys, nextpnr-himbaechel, Apicula
 ## Highlights
 
 - **Zero External RAM Required**: Runs entirely on the FPGA's on-chip Block SRAM (BSRAM). No PSRAM or external SDRAM needed.
-- **High-Density Mesh**: 128 vertices and 377 edges derived from the canonical Stanford Bunny with 4 anatomical color regions (Ears, Head, Body, Feet).
+- **High-Density Mesh**: Upgraded to 256 vertices and 700 edges derived from the canonical Stanford Bunny with 4 anatomical color regions (Ears, Head, Body, Feet).
 - **Smooth 60 FPS Animation**: Real-time 360° Yaw rotation with continuous painter's depth sorting (pass 0: shaded back-edges, pass 1: neon front-edges).
 - **Hardware Bresenham Rasterizer**: Fast integer line rasterizer completing a full frame in ~0.80ms (far below the 16.6ms 60Hz frame budget).
 - **Integer 4x4 Scaler**: Double-buffered 160x120 4-bit palette buffer (10 BSRAM DPB blocks) upscaled on-the-fly to standard 640x480 @ 60Hz HDMI.
-- **Architectural Breakthrough**: Duplicated BSRAM arrays for transformed vertex storage, eliminating 128:1 multiplexer trees and slashing logic cell utilization by **60%** (fitting easily into Gowin GW1N-9C).
+- **Architectural Breakthrough**: Duplicated BSRAM arrays for transformed vertex storage, eliminating large multiplexer trees and slashing logic cell utilization by **60%** (fitting easily into Gowin GW1N-9C).
 - **Complete Test Suite**: 7/7 automated bit-level regression tests (including full-frame RTL simulation with PPM output verification).
 
 ---

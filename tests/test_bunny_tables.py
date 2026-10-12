@@ -21,8 +21,8 @@ TESTDATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testdata")
 # triangle edges (9,13),(13,10),(9,10), so no isolated verts remain.
 # Asserted exactly so any mesh/table change fails loudly instead of silently.
 KNOWN_ISOLATED_VERTS = set()
-NUM_VERTS = 128
-NUM_EDGES = 377
+NUM_VERTS = 256
+NUM_EDGES = 700
 
 
 def test_vert_count_and_index_coverage():

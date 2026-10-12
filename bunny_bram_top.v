@@ -244,24 +244,24 @@ module bunny_bram_top (
     reg [7:0]  yaw;
     reg [14:0] clear_cnt;
     reg [7:0]  vert_idx;
-    reg [9:0]  edge_idx; // 377 edges
+    reg [9:0]  edge_idx; // 700 edges
     reg        pass; // 0 = back edges, 1 = front edges
     reg        draw_frame_done;
 
     // Mesh sizes (regenerate via tools/gen_mesh.py; keep tests in sync)
-    localparam NUM_VERTS = 128;
-    localparam NUM_EDGES = 377;
+    localparam NUM_VERTS = 256;
+    localparam NUM_EDGES = 700;
 
     // Transformed 2D screen coordinates: duplicated BSRAM arrays
     // ({sx[7:0], sy[6:0], z}) to allow single-cycle concurrent read of endpoints v0 and v1.
-    // Infers 2 simple BSRAM blocks (SPX9/DPB) and completely eliminates wide 128:1 LUT MUXes.
-    reg [15:0] vert_data_0 [0:127];
-    reg [15:0] vert_data_1 [0:127];
+    // Infers 2 simple BSRAM blocks (SPX9/DPB) and completely eliminates wide 256:1 LUT MUXes.
+    reg [15:0] vert_data_0 [0:255];
+    reg [15:0] vert_data_1 [0:255];
     reg        vd_we;
-    reg [6:0]  vd_waddr;
+    reg [7:0]  vd_waddr;
     reg [15:0] vd_wdata;
-    reg [6:0]  vd0_raddr;
-    reg [6:0]  vd1_raddr;
+    reg [7:0]  vd0_raddr;
+    reg [7:0]  vd1_raddr;
     reg [15:0] vd0_q;
     reg [15:0] vd1_q;
 
@@ -293,9 +293,9 @@ module bunny_bram_top (
     reg signed [11:0] r_yrot;
 
     // Vertex/edge ROMs in BSRAM (sync read, hex init). Keeps wide MUX
-    // trees out of LUTs (~2.5k LUTs saved at 128v/377e).
-    reg [35:0] vert_mem [0:127];
-    reg [15:0] edge_mem [0:511];
+    // trees out of LUTs (~5k LUTs saved at 256v/700e).
+    reg [35:0] vert_mem [0:255];
+    reg [15:0] edge_mem [0:1023];
     initial begin
         $readmemh("vert_mem.hex", vert_mem);
         $readmemh("edge_mem.hex", edge_mem);
@@ -434,10 +434,10 @@ module bunny_bram_top (
             cur_color       <= 4'd0;
             watchdog        <= 9'd0;
             vd_we           <= 1'b0;
-            vd_waddr        <= 7'd0;
+            vd_waddr        <= 8'd0;
             vd_wdata        <= 16'd0;
-            vd0_raddr       <= 7'd0;
-            vd1_raddr       <= 7'd0;
+            vd0_raddr       <= 8'd0;
+            vd1_raddr       <= 8'd0;
         end else begin
             case (r_state)
                 S_IDLE: begin
@@ -513,7 +513,7 @@ module bunny_bram_top (
                 S_ROT_STAGE2: begin
                     fb_we_a  <= 1'b0;
                     vd_we    <= 1'b1;
-                    vd_waddr <= vert_idx[6:0];
+                    vd_waddr <= vert_idx[7:0];
                     vd_wdata <= {clamped_sx, clamped_sy, (r_zrot >= 0)};
 
                     if (vert_idx == NUM_VERTS - 1) begin
@@ -539,8 +539,8 @@ module bunny_bram_top (
                     vd_we     <= 1'b0;
                     // emem_q now holds edge ROM[edge_idx].
                     // v0_idx and v1_idx are valid; initiate BSRAM vertex read.
-                    vd0_raddr <= v0_idx[6:0];
-                    vd1_raddr <= v1_idx[6:0];
+                    vd0_raddr <= v0_idx;
+                    vd1_raddr <= v1_idx;
                     r_state   <= S_LOAD_EDGE3;
                 end
 
