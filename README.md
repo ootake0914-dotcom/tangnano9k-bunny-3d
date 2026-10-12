@@ -1,6 +1,6 @@
 # Tang Nano 9K: Real-Time 3D Stanford Bunny Wireframe Engine
 
-![Stanford Bunny Demo](bunny_256v_demo.gif)
+![Stanford Bunny Demo](demo_256v.gif)
 
 A real-time 3D wireframe graphics engine running on the **Sipeed Tang Nano 9K** (Gowin GW1NR-9C FPGA), generating **640x480 @ 60Hz HDMI/DVI video output**.
 
